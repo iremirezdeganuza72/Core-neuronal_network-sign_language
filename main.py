@@ -16,6 +16,8 @@ data= os.listdir(data_path)
 # Run each file through the path and save it in "sign_language"
 # Run each image through the path then save it in IMAGE_FILES
 IMAGE_FILES=[]
+X=[]
+y=[]
 limite = 1
 for folder in data:
   contador=0
@@ -24,7 +26,6 @@ for folder in data:
     if contador < limite:
       IMAGE_FILES.append(f"{data_path}/{folder}/{images}")
       contador+= 1
-print(len(IMAGE_FILES))
 with mp_hands.Hands(
     static_image_mode=True,
     max_num_hands=2,
@@ -32,34 +33,24 @@ with mp_hands.Hands(
   for idx, file in enumerate(IMAGE_FILES):
     # Read an image, flip it around y-axis for correct handedness output (see
     # above).
-    image = cv2.flip(cv2.imread(file), 1)
+    image = cv2.imread(file)
     # Convert the BGR image to RGB before processing.image.png
     results = hands.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
     # Print handedness and draw hand landmarks on the image.
-   
     if not results.multi_hand_landmarks:
       continue
+    
+    
+    
+    land= []
     for hand_landmarks in results.multi_hand_landmarks:
-      print (hand_landmarks.landmark[0].x, dir(hand_landmarks.landmark[0]))
-      break
-      #print('hand_landmarks:', hand_landmarks)
-      #print(
-          #f'Index finger tip coordinates: (',
-          #f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width}, '
-          #f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_height})'
-      #)
-      #mp_drawing.draw_landmarks(
-          #annotated_image,
-          #hand_landmarks,
-          #mp_hands.HAND_CONNECTIONS,
-          #mp_drawing_styles.get_default_hand_landmarks_style(),
-          #mp_drawing_styles.get_default_hand_connections_style())
-    #cv2.imwrite(
-        #'/tmp/annotated_image' + str(idx) + '.png', cv2.flip(annotated_image, 1))
-    # Draw hand world landmarks.
-    #if not results.multi_hand_world_landmarks:
-    # continue
-    # for hand_world_landmarks in results.multi_hand_world_landmarks:
-    # mp_drawing.plot_landmarks(
-    # hand_world_landmarks, mp_hands.HAND_CONNECTIONS, azimuth=5)
+      for landmarks in hand_landmarks.landmark:
+        land.append([landmarks.x, landmarks.y, landmarks.z])
+         
+    X.append(land)
+    y.append(file.split("/")[1])
+  X=np.array(X)
+  y=np.array(y).reshape(-1,1)
+  np.save("data_np/x.npy", X) 
+  np.save("data_np/y.npy", y)    

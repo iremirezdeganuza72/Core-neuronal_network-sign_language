@@ -18,14 +18,14 @@ data= os.listdir(data_path)
 IMAGE_FILES=[]
 X=[]
 y=[]
-limite = 1
+#limite = 1
 for folder in data:
-  contador=0
+  #contador=0
   sign_language= os.listdir(f"{data_path}/{folder}")
   for images in sign_language:
-    if contador < limite:
+    #if contador < limite:
       IMAGE_FILES.append(f"{data_path}/{folder}/{images}")
-      contador+= 1
+      #contador+= 1
 with mp_hands.Hands(
     static_image_mode=True,
     max_num_hands=2,
@@ -40,8 +40,6 @@ with mp_hands.Hands(
     # Print handedness and draw hand landmarks on the image.
     if not results.multi_hand_landmarks:
       continue
-    
-    
     
     land= []
     for hand_landmarks in results.multi_hand_landmarks:

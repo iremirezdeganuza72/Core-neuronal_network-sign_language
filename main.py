@@ -44,11 +44,13 @@ with mp_hands.Hands(
     land= []
     for hand_landmarks in results.multi_hand_landmarks:
       for landmarks in hand_landmarks.landmark:
-        land.append([landmarks.x, landmarks.y, landmarks.z])
+        land.append(landmarks.x)
+        land.append(landmarks.y)
+        land.append(landmarks.z)
          
     X.append(land)
     y.append(file.split("/")[1])
   X=np.array(X)
-  y=np.array(y).reshape(-1,1)
+  y=np.array(y)
   np.save("data_np/x.npy", X) 
   np.save("data_np/y.npy", y)    

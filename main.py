@@ -28,7 +28,7 @@ for folder in data:
       #contador+= 1
 with mp_hands.Hands(
     static_image_mode=True,
-    max_num_hands=2,
+    max_num_hands=1,
     min_detection_confidence=0.5) as hands:
   for idx, file in enumerate(IMAGE_FILES):
     # Read an image, flip it around y-axis for correct handedness output (see
@@ -54,3 +54,4 @@ with mp_hands.Hands(
   y=np.array(y)
   np.save("data_np/x.npy", X) 
   np.save("data_np/y.npy", y)    
+

@@ -7,7 +7,7 @@ run=st.checkbox("run")
 
 FRAME_WINDOW=st.image([])
 
-cam=cv2.VideoCapture(1)
+cam=cv2.VideoCapture(0)
 
 while run:
     ret, frame= cam.read()
